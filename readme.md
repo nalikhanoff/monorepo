@@ -1,4 +1,4 @@
-### Project name: project with maps
+### Project name: FTD
 
 ##### Backend: nestJS
 ##### Frontend: nextJS
