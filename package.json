@@ -1,0 +1,14 @@
+{
+  "name": "monorepo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": ["common", "backend", "frontend"],
+  "scripts": {
+    "dev:back": "npm run start:dev --workspace=backend",
+    "dev:front": "npm run dev --workspace=frontend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
