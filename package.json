@@ -6,7 +6,9 @@
   "workspaces": ["common", "backend", "frontend"],
   "scripts": {
     "dev:back": "npm run start:dev --workspace=backend",
-    "dev:front": "npm run dev --workspace=frontend"
+    "dev:front": "npm run dev --workspace=frontend",
+    "db:create-migration": "npm run db:create-migration --workspace=backend",
+    "db:apply-migration": "npm run db:apply-migration --workspace=backend && npm run prisma:generate --workspace=backend"
   },
   "keywords": [],
   "author": "",
