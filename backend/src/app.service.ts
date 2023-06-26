@@ -5,9 +5,18 @@ import { User } from '@prisma/client';
 @Injectable()
 export class AppService {
   constructor(private readonly prisma: PrismaService) {}
-  getUser(email: string): Promise<User> {
+  getUser(login: string): Promise<User> {
     return this.prisma.user.findFirst({
-      where: { email },
+      where: {
+        login,
+        deletedAt: null,
+      },
+    });
+  }
+
+  deleteUser(login: string) {
+    return this.prisma.user.delete({
+      where: { login },
     });
   }
 }
