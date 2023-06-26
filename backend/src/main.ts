@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { PrismaService } from './prisma.service';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,7 +12,10 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  await app.listen(5000);
+  const config = app.get<ConfigService>(ConfigService);
+  const port = config.get('BACKEND_PORT');
+  await app.listen(port);
+  Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
