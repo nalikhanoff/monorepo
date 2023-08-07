@@ -4,7 +4,8 @@ import * as Joi from 'joi';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from './prisma/prisma.service';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { PrismaService } from './prisma.service';
       expandVariables: true,
       isGlobal: true,
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

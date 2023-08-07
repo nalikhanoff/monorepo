@@ -18,10 +18,11 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prisma": "npx dotenv -e .env.local -e .env.production -e .env.development npx prisma",
-    "prisma:generate": "npx prisma generate",
-    "db:create-migration": "npx dotenv -e .env.local -e .env.production -e .env.development -- npx prisma migrate dev --create-only",
-    "db:apply-migration": "npx dotenv -e .env.local -e .env.production -e .env.development -- npx prisma migrate deploy"
+    "prisma": "npx dotenv -e .env.local -e .env.production -e .env.development npx prisma --schema ./prisma/schema.prisma",
+    "prisma:generate": "npm run prisma generate",
+    "db:create-migration": "npm run prisma migrate dev --create-only",
+    "db:apply-migration": "npm run prisma migrate deploy",
+    "db:reset": "npm run prisma migrate reset --force"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -35,7 +36,6 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "dotenv-cli": "^7.2.1",
-    "ipaddr.js": "^2.1.0",
     "joi": "^17.9.2",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
