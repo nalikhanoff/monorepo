@@ -26,7 +26,8 @@ model Product {
   id            Int            @id @default(autoincrement())
   name          String         @db.VarChar(255)
   description   String         @db.Text()
-  price         Int
+  price         Decimal        @db.Decimal(65, 4)
+  unit          String?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   deletedAt     DateTime?      @db.Timestamptz
@@ -36,13 +37,15 @@ model Product {
 }
 
 model ProductImage {
-  id        Int       @id @default(autoincrement())
-  url       String    @db.VarChar(255)
-  productId Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime? @db.Timestamptz
-  product   Product   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_Image_ibfk_1")
+  id          Int       @id @default(autoincrement())
+  url         String    @db.VarChar(255)
+  productId   Int
+  isMainImage Boolean   @default(false)
+  order       Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime? @db.Timestamptz
+  product     Product   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_Image_ibfk_1")
 
   @@map("product_Image")
 }
