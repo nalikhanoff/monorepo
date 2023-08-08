@@ -18,4 +18,31 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime? @db.Timestamptz
+
+  @@map("user_User")
+}
+
+model Product {
+  id            Int            @id @default(autoincrement())
+  name          String         @db.VarChar(255)
+  description   String         @db.Text()
+  price         Int
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  deletedAt     DateTime?      @db.Timestamptz
+  productImages ProductImage[]
+
+  @@map("product_Product")
+}
+
+model ProductImage {
+  id        Int       @id @default(autoincrement())
+  url       String    @db.VarChar(255)
+  productId Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? @db.Timestamptz
+  product   Product   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_Image_ibfk_1")
+
+  @@map("product_Image")
 }
