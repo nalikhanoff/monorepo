@@ -17,7 +17,7 @@ CREATE TABLE "product_Product" (
     "name" VARCHAR(255) NOT NULL,
     "description" TEXT NOT NULL,
     "price" DECIMAL(65,4) NOT NULL,
-    "unit" TEXT,
+    "unit" VARCHAR(40),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "deletedAt" TIMESTAMPTZ,

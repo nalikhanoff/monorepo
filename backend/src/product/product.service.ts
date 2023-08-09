@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateProductDto } from './product.dto';
 
 @Injectable()
 export class ProductService {
@@ -38,6 +39,24 @@ export class ProductService {
             isMainImage: true,
           },
         },
+      },
+    });
+  }
+
+  create(dto: CreateProductDto) {
+    return this.prismaService.product.create({
+      data: {
+        name: dto.name,
+        description: dto.description,
+        price: dto.price,
+        unit: dto.unit,
+        ...(!!dto.productImages.length && {
+          productImages: {
+            createMany: {
+              data: dto.productImages,
+            },
+          },
+        }),
       },
     });
   }
