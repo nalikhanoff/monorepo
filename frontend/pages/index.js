@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import Container from '@mui/material/Container';
+import Link from 'next/link';
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -9,9 +9,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 
+const { BACKEND_URL } = process.env;
+
 export const getServerSideProps = async () => {
   try {
-    const { data: products } = await axios('http://localhost:15000/products');
+    const { data: products } = await axios(`${BACKEND_URL}/products`);
     return { props: { products } };
   } catch (err) {
     return { props: { products: [] } };
@@ -20,9 +22,9 @@ export const getServerSideProps = async () => {
 
 export default function Home({ products }) {
   return (
-    <Container maxWidth="xl">
+    <>
       <Head>
-        <title>Create Next App</title>
+        <title>ErKul company | Строительные материалы</title>
       </Head>
       <Grid container spacing={2}>
         {!!products.length &&
@@ -47,13 +49,15 @@ export default function Home({ products }) {
                       {product.price} тг
                     </Typography>
                     <br />
-                    <Button size="small">Подробнее</Button>
+                    <Link href={`/${product.id}`}>
+                      <Button size="small">Подробнее</Button>
+                    </Link>
                   </CardActions>
                 </Card>
               </Grid>
             );
           })}
       </Grid>
-    </Container>
+    </>
   );
 }

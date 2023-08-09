@@ -21,4 +21,24 @@ export class ProductService {
       },
     });
   }
+
+  getProduct(id: number) {
+    return this.prismaService.product.findFirst({
+      where: { id },
+      include: {
+        productImages: {
+          where: {
+            deletedAt: null,
+          },
+          orderBy: {
+            isMainImage: 'asc',
+          },
+          select: {
+            url: true,
+            isMainImage: true,
+          },
+        },
+      },
+    });
+  }
 }

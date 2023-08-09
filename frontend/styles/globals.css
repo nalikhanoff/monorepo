@@ -14,3 +14,17 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.slick-next {
+  right: 25px !important;
+  color: inherit !important;
+}
+
+.slick-prev {
+  left: 25px !important;
+  color: inherit !important;
+}
+
+.slick-dots {
+  bottom: 25px !important;
+}
