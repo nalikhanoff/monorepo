@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import Link from 'next/link';
 
+import { getCookie } from 'cookies-next';
+
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
@@ -44,7 +46,9 @@ function MyApp({
               >
                 ErKul Company
               </Typography>
-              <Button color="inherit">Login</Button>
+              <Button color="inherit" component={Link} href="/login">
+                Вход
+              </Button>
             </Toolbar>
           </AppBar>
         </Box>
