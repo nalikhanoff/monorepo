@@ -19,7 +19,10 @@ const { BACKEND_URL } = process.env;
 
 export const getServerSideProps = async ({ params: { id } }) => {
   try {
-    const { data: product } = await axios(`${BACKEND_URL}/products/${id}`);
+    const response = await fetch(`${BACKEND_URL}/products/${id}`);
+    if (!response.ok) return { notFound: true };
+
+    const product = await response.json();
     return { props: { product } };
   } catch (err) {
     return { notFound: true };

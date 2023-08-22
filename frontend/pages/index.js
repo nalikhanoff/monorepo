@@ -7,13 +7,15 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import axios from 'axios';
 
 const { BACKEND_URL } = process.env;
 
 export const getServerSideProps = async () => {
   try {
-    const { data: products } = await axios(`${BACKEND_URL}/products`);
+    const response = await fetch(`${BACKEND_URL}/products`);
+    if (!response.ok) return { props: { products: [] } };
+
+    const products = await response.json();
     return { props: { products } };
   } catch (err) {
     return { props: { products: [] } };

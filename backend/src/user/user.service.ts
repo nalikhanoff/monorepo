@@ -33,7 +33,7 @@ export class UserService {
     }
 
     delete user.password;
-    const token = this.jwtService.sign({ ...user });
-    return { token, user };
+    const jwt = this.jwtService.sign({ ...user });
+    return { jwt, user };
   }
 }

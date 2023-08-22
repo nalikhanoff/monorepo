@@ -1,7 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
-import axios from 'axios';
-import { setCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -28,9 +27,15 @@ export default function Login() {
 
   const handleLoginClick = useCallback(async () => {
     try {
-      const { data } = await axios.post('/api/login', loginState);
-      setCookie('token', data.token);
-      router.push('/');
+      const res = await signIn('credentials', {
+        redirect: false,
+        login: loginState.login,
+        password: loginState.password,
+        callbackUrl: '/profile',
+      });
+      if (!res?.error) {
+        router.push('/');
+      }
     } catch (err) {
       console.log(err);
     }
