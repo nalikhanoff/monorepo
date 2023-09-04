@@ -27,9 +27,19 @@ export default function Appbar() {
               Вход
             </Button>
           ) : (
-            <Button color="inherit" variant="outlined" onClick={signOut}>
-              Выйти
-            </Button>
+            <>
+              <Button
+                color="inherit"
+                component={Link}
+                href="/admin/create"
+                sx={{ mr: 1 }}
+              >
+                Создать
+              </Button>
+              <Button color="inherit" variant="outlined" onClick={signOut}>
+                Выйти
+              </Button>
+            </>
           )}
         </Toolbar>
       </AppBar>

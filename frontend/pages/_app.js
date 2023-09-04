@@ -7,14 +7,14 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import Container from '@mui/material/Container';
 
-import AppBar from '../widgets/AppBar';
+import AppBar from 'widgets/AppBar';
 
-import createEmotionCache from '../config/createEmotionCache';
-import theme from '../config/theme';
+import createCache from 'shared/config/emotionCache';
+import theme from 'shared/themes';
 
 import '../styles/globals.css';
 
-const clientSideEmotionCache = createEmotionCache();
+const clientSideEmotionCache = createCache();
 
 function MyApp({
   Component,

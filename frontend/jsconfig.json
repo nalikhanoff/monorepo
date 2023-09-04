@@ -2,7 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/config/*": ["config/*"]
+      "widgets/*": ["widgets/*"],
+      "features/*": ["features/*"],
+      "shared/*": ["shared/*"],
     }
   }
 }
