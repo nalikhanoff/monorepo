@@ -16,11 +16,12 @@ export default function ImageField({
 }) {
   return (
     <>
-      {!!value && !isValidImage && (
+      {!value && !isValidImage && (
         <TextField
           placeholder="Ссылка на изображение продукта"
           value={value}
           onChange={onChange}
+          fullWidth
         />
       )}
       {isValidImage && (
