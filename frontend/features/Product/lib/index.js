@@ -1,6 +1,4 @@
 export async function checkImage(url) {
-  const res = await fetch(url);
-  const buff = await res.blob();
-
-  return buff.type.startsWith('image/');
+  const res = await fetch(`/api/check-image?url=${url}`);
+  return res.json();
 }

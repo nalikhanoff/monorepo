@@ -5,6 +5,7 @@
       "widgets/*": ["widgets/*"],
       "features/*": ["features/*"],
       "shared/*": ["shared/*"],
+      "entities/*": ["entities/*"],
     }
   }
 }
