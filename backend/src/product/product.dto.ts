@@ -15,6 +15,7 @@ export class CreateProductDto {
   @IsString()
   description: string;
 
+  @Type(() => Number)
   @IsNumber()
   price: number;
 

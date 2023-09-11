@@ -12,6 +12,7 @@ export default function ProductForm() {
     name: '',
     description: '',
     price: '',
+    unit: 'unit',
     productImages: [
       {
         url: '',
@@ -89,9 +90,33 @@ export default function ProductForm() {
 
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        console.log('Hi there');
+        try {
+          const res = await fetch('/api/products', {
+            method: 'POST',
+            body: JSON.stringify(product),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if (!res.ok) return;
+
+          setProduct({
+            name: '',
+            description: '',
+            price: '',
+            productImages: [
+              {
+                url: '',
+                isValidImage: false,
+                isMainImage: false,
+              },
+            ],
+          });
+        } catch (err) {
+          console.log(err);
+        }
       }}
     >
       <Grid container sx={{ marginTop: 2 }} spacing={2}>
