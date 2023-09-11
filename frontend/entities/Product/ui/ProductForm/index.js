@@ -12,7 +12,13 @@ export default function ProductForm() {
     name: '',
     description: '',
     price: '',
-    productImages: [{ url: '' }],
+    productImages: [
+      {
+        url: '',
+        isValidImage: false,
+        isMainImage: false,
+      },
+    ],
   });
 
   const handleTextChange = useRef(function (e) {
@@ -25,10 +31,27 @@ export default function ProductForm() {
 
   const handleChangeImageField = useRef((e) => {
     const { idx } = e.currentTarget.dataset;
-    const { value } = e.target;
+    const { name, value } = e.target;
     setProduct((prevValue) => {
       const newProductImages = [...prevValue.productImages];
-      newProductImages[+idx].url = value;
+      newProductImages[+idx][name] = value;
+      return {
+        ...prevValue,
+        productImages: newProductImages,
+      };
+    });
+  });
+
+  const handleChangeMainImage = useRef((e) => {
+    const { idx } = e.currentTarget.dataset;
+    const { checked } = e.target;
+
+    setProduct((prevValue) => {
+      const newProductImages = prevValue.productImages.map((img) => {
+        img.isMainImage = false;
+        return img;
+      });
+      newProductImages[+idx].isMainImage = checked;
       return {
         ...prevValue,
         productImages: newProductImages,
@@ -40,7 +63,14 @@ export default function ProductForm() {
     setProduct((prevValue) => {
       return {
         ...prevValue,
-        productImages: [...prevValue.productImages, { url: '' }],
+        productImages: [
+          ...prevValue.productImages,
+          {
+            url: '',
+            isValidImage: false,
+            isMainImage: false,
+          },
+        ],
       };
     });
   });
@@ -114,16 +144,19 @@ export default function ProductForm() {
               <Grid item xs={4} key={idx}>
                 <ImageField
                   idx={idx}
-                  value={image?.url || ''}
+                  value={image.url}
+                  isValidImage={image.isValidImage}
+                  isMainImage={image.isMainImage}
                   onChange={handleChangeImageField.current}
                   onDelete={handleDeleteImageField.current}
+                  onChangeMainImage={handleChangeMainImage.current}
                 />
               </Grid>
             );
           })}
         </Grid>
       </Grid>
-      <Grid container sx={{ mt: 2 }}>
+      <Grid container sx={{ my: 2 }}>
         <Grid>
           <Button type="submit" variant="contained">
             Сохранить

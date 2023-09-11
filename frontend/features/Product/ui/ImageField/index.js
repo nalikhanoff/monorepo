@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
@@ -17,24 +17,38 @@ export default function ImageField({
   onChange,
   onDelete,
   value,
+  isValidImage,
   isMainImage,
   onChangeMainImage,
   idx,
 }) {
-  const [isValidImage, setValidImage] = useState(false);
-  const debouncedValue = useDebounce(value, 500);
+  const debouncedValue = useDebounce(value, 700);
 
   useEffect(() => {
     if (debouncedValue) {
       checkImage(debouncedValue)
         .then((res) => {
-          setValidImage(res.isSuccess);
+          const event = {
+            target: {
+              name: 'isValidImage',
+              value: res.isSuccess,
+            },
+            currentTarget: { dataset: { idx } },
+          };
+          onChange(event);
         })
         .catch(() => {
-          setValidImage(false);
+          const event = {
+            target: {
+              name: 'isValidImage',
+              value: false,
+            },
+            currentTarget: { dataset: { idx } },
+          };
+          onChange(event);
         });
     }
-  });
+  }, [debouncedValue]);
   return (
     <>
       {!isValidImage ? (
@@ -43,6 +57,9 @@ export default function ImageField({
           value={value}
           onChange={onChange}
           fullWidth
+          name="url"
+          type="url"
+          pattern="https?://.+"
           inputProps={{
             'data-idx': idx,
           }}
@@ -61,7 +78,13 @@ export default function ImageField({
             <FormControlLabel
               label="Обложка этого продукта"
               control={
-                <Checkbox checked={isMainImage} onChange={onChangeMainImage} />
+                <Checkbox
+                  checked={isMainImage}
+                  onChange={onChangeMainImage}
+                  inputProps={{
+                    'data-idx': idx,
+                  }}
+                />
               }
             />
           </CardActions>
