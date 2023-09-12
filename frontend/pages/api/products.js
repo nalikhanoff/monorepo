@@ -30,7 +30,7 @@ export default async function handler(req, res) {
         return res.json({ isSuccess: false, error: err.response.data.message });
       }
     default:
-      res.setHeader('Allow', ['GET']);
+      res.setHeader('Allow', ['GET', 'POST']);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

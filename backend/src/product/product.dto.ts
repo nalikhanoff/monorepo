@@ -3,6 +3,7 @@ import {
   IsArray,
   IsBoolean,
   IsNumber,
+  IsOptional,
   IsString,
   IsUrl,
   ValidateNested,
@@ -24,14 +25,32 @@ export class CreateProductDto {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ProductImage)
-  productImages: ProductImage[];
+  @Type(() => CreateProductImageDto)
+  productImages: CreateProductImageDto[];
 }
 
-export class ProductImage {
+export class CreateProductImageDto {
   @IsBoolean()
   isMainImage: boolean;
 
   @IsUrl()
   url: string;
+}
+
+export class ProductImageDto extends CreateProductImageDto {
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  id: number;
+}
+
+export class ProductDto extends CreateProductDto {
+  @Type(() => Number)
+  @IsNumber()
+  id: number;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ProductImageDto)
+  productImages: ProductImageDto[];
 }

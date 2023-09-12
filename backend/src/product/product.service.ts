@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateProductDto } from './product.dto';
+import { CreateProductDto, ProductDto } from './product.dto';
 
 @Injectable()
 export class ProductService {
@@ -57,6 +57,38 @@ export class ProductService {
             },
           },
         }),
+      },
+    });
+  }
+
+  async update(dto: ProductDto) {
+    if (dto.productImages.length) {
+      await Promise.all(
+        dto.productImages.map((img) => {
+          return this.prismaService.productImage.upsert({
+            where: { id: img?.id || 0 },
+            create: {
+              productId: dto.id,
+              url: img.url,
+              isMainImage: img.isMainImage,
+            },
+            update: {
+              productId: dto.id,
+              url: img.url,
+              isMainImage: img.isMainImage,
+            },
+          });
+        }),
+      );
+    }
+
+    return this.prismaService.product.update({
+      where: { id: dto.id },
+      data: {
+        name: dto.name,
+        description: dto.description,
+        price: dto.price,
+        unit: dto.unit,
       },
     });
   }
