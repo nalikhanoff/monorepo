@@ -28,3 +28,8 @@ a {
 .slick-dots {
   bottom: 25px !important;
 }
+
+body .slick-prev::before,
+body .slick-next::before {
+  display: none;
+}

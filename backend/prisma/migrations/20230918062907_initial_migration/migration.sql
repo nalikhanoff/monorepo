@@ -42,5 +42,8 @@ CREATE TABLE "product_Image" (
 -- CreateIndex
 CREATE UNIQUE INDEX "user_User_login_key" ON "user_User"("login");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "productId_url" ON "product_Image"("productId", "url");
+
 -- AddForeignKey
 ALTER TABLE "product_Image" ADD CONSTRAINT "product_Image_ibfk_1" FOREIGN KEY ("productId") REFERENCES "product_Product"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;

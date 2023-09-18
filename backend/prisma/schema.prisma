@@ -47,5 +47,6 @@ model ProductImage {
   deletedAt   DateTime? @db.Timestamptz
   product     Product   @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "product_Image_ibfk_1")
 
+  @@unique([productId, url], map: "productId_url")
   @@map("product_Image")
 }

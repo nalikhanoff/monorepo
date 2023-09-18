@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
+import { useRef } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Box from '@mui/material/Box';
@@ -10,8 +12,13 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import IconButton from '@mui/material/IconButton';
 
 import Slider from 'react-slick';
+
+import SlickButton from 'shared/components/SlickBtn';
+
+import { deleteProduct } from 'shared/api/product';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -32,6 +39,19 @@ export const getServerSideProps = async ({ params: { id } }) => {
 
 export default function Product({ product }) {
   const { data: session } = useSession();
+  const router = useRouter();
+
+  const handleDeleteClick = useRef(async (e) => {
+    const { id } = e.currentTarget.dataset;
+    console.log(id);
+
+    try {
+      await deleteProduct(id);
+    } catch (e) {
+      console.log(e);
+    }
+    router.push('/');
+  });
   return (
     <>
       <Head>
@@ -47,8 +67,20 @@ export default function Product({ product }) {
               infinite
               centerMode
               focusOnSelect
-              nextArrow={<KeyboardArrowRight color="primary" />}
-              prevArrow={<KeyboardArrowLeft color="primary" />}
+              nextArrow={
+                <SlickButton>
+                  <IconButton>
+                    <KeyboardArrowRight color="primary" />
+                  </IconButton>
+                </SlickButton>
+              }
+              prevArrow={
+                <SlickButton>
+                  <IconButton>
+                    <KeyboardArrowLeft color="primary" />
+                  </IconButton>
+                </SlickButton>
+              }
             >
               {product.productImages.map((image) => {
                 return (
@@ -75,14 +107,26 @@ export default function Product({ product }) {
                 Связаться
               </Button>
             ) : (
-              <Button
-                fullWidth
-                variant="contained"
-                component={Link}
-                href={`/admin/update/${product.id}`}
-              >
-                Редактировать
-              </Button>
+              <>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  component={Link}
+                  href={`/admin/update/${product.id}`}
+                >
+                  Редактировать
+                </Button>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  color="error"
+                  sx={{ mt: 1 }}
+                  data-id={product.id}
+                  onClick={handleDeleteClick.current}
+                >
+                  Удалить
+                </Button>
+              </>
             )}
           </Paper>
           <Paper elevation={1} sx={{ p: 2, mt: 1 }}>

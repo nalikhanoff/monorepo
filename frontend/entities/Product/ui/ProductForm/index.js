@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 
 import ImageField from 'features/Product/ui/ImageField';
 import { InitialStateOfProduct } from 'entities/Product/config/InitialStateOfProduct';
+import { createProduct, updateProduct } from 'shared/api/product';
 
 export default function ProductForm({ isUpdate = false, initialProductState }) {
   const [product, setProduct] = useState(
@@ -83,18 +84,12 @@ export default function ProductForm({ isUpdate = false, initialProductState }) {
     <form
       onSubmit={async (e) => {
         e.preventDefault();
-        if (isUpdate) {
-          return;
-        }
         try {
-          const res = await fetch('/api/products', {
-            method: 'POST',
-            body: JSON.stringify(product),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          if (!res.ok) return;
+          if (isUpdate) {
+            await updateProduct(product);
+            return;
+          }
+          await createProduct(product);
 
           setProduct({
             name: '',

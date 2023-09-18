@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
@@ -23,9 +23,11 @@ export default function ImageField({
   idx,
 }) {
   const debouncedValue = useDebounce(value, 700);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     if (debouncedValue) {
+      setLoading(true);
       checkImage(debouncedValue)
         .then((res) => {
           const event = {
@@ -47,6 +49,7 @@ export default function ImageField({
           };
           onChange(event);
         });
+      setLoading(false);
     }
   }, [debouncedValue]);
   return (
@@ -68,7 +71,10 @@ export default function ImageField({
         <Card>
           <CardHeader
             action={
-              <IconButton onClick={onDelete} data-idx={idx}>
+              <IconButton
+                onClick={!isLoading ? onDelete : () => null}
+                data-idx={idx}
+              >
                 <CloseIcon />
               </IconButton>
             }

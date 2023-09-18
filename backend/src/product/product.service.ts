@@ -15,6 +15,9 @@ export class ProductService {
             deletedAt: null,
             isMainImage: true,
           },
+          orderBy: {
+            isMainImage: 'desc',
+          },
           select: {
             url: true,
           },
@@ -32,7 +35,7 @@ export class ProductService {
             deletedAt: null,
           },
           orderBy: {
-            isMainImage: 'asc',
+            isMainImage: 'desc',
           },
           select: {
             url: true,
@@ -62,11 +65,20 @@ export class ProductService {
   }
 
   async update(dto: ProductDto) {
+    await this.prismaService.productImage.deleteMany({
+      where: { productId: dto.id },
+    });
+
     if (dto.productImages.length) {
       await Promise.all(
         dto.productImages.map((img) => {
           return this.prismaService.productImage.upsert({
-            where: { id: img?.id || 0 },
+            where: {
+              productId_url: {
+                productId: dto.id,
+                url: img.url,
+              },
+            },
             create: {
               productId: dto.id,
               url: img.url,
@@ -76,6 +88,7 @@ export class ProductService {
               productId: dto.id,
               url: img.url,
               isMainImage: img.isMainImage,
+              deletedAt: null,
             },
           });
         }),
@@ -91,5 +104,14 @@ export class ProductService {
         unit: dto.unit,
       },
     });
+  }
+
+  async delete(id: number) {
+    console.log(id);
+    await this.prismaService.productImage.deleteMany({
+      where: { productId: id },
+    });
+
+    return this.prismaService.product.delete({ where: { id } });
   }
 }

@@ -20,6 +20,7 @@ export class CreateProductDto {
   @IsNumber()
   price: number;
 
+  @IsOptional()
   @IsString()
   unit: string;
 
