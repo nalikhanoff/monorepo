@@ -6,21 +6,12 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import ImageField from 'features/Product/ui/ImageField';
+import { InitialStateOfProduct } from 'entities/Product/config/InitialStateOfProduct';
 
-export default function ProductForm() {
-  const [product, setProduct] = useState({
-    name: '',
-    description: '',
-    price: '',
-    unit: 'unit',
-    productImages: [
-      {
-        url: '',
-        isValidImage: false,
-        isMainImage: false,
-      },
-    ],
-  });
+export default function ProductForm({ isUpdate = false, initialProductState }) {
+  const [product, setProduct] = useState(
+    isUpdate ? initialProductState : InitialStateOfProduct,
+  );
 
   const handleTextChange = useRef(function (e) {
     const { name, value } = e.target;
@@ -92,6 +83,9 @@ export default function ProductForm() {
     <form
       onSubmit={async (e) => {
         e.preventDefault();
+        if (isUpdate) {
+          return;
+        }
         try {
           const res = await fetch('/api/products', {
             method: 'POST',

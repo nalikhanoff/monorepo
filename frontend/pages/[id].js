@@ -1,6 +1,7 @@
 import Head from 'next/head';
+import Link from 'next/link';
 
-import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -30,6 +31,7 @@ export const getServerSideProps = async ({ params: { id } }) => {
 };
 
 export default function Product({ product }) {
+  const { data: session } = useSession();
   return (
     <>
       <Head>
@@ -68,9 +70,20 @@ export default function Product({ product }) {
             <Typography variant="h4" sx={{ marginTop: 2 }}>
               {product.price} тг
             </Typography>
-            <Button fullWidth variant="outlined">
-              Связаться
-            </Button>
+            {!session?.jwt ? (
+              <Button fullWidth variant="outlined" href="tel:87470000000">
+                Связаться
+              </Button>
+            ) : (
+              <Button
+                fullWidth
+                variant="contained"
+                component={Link}
+                href={`/admin/update/${product.id}`}
+              >
+                Редактировать
+              </Button>
+            )}
           </Paper>
           <Paper elevation={1} sx={{ p: 2, mt: 1 }}>
             <Typography variant="subtitle2">Описание</Typography>
