@@ -1,4 +1,4 @@
-### Project name: FTD
+### Project name: Test project
 
 ##### Backend: nestJS
 ##### Frontend: nextJS
